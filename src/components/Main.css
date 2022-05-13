@@ -1,0 +1,53 @@
+.todo {
+	display: flex;
+	justify-content: center;
+	margin-top: 130px;
+}
+
+.todoContainer {
+	background-color: #fff;
+	width: 90%;
+	max-width: 530px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+	padding: 30px;
+	box-shadow: var(--dark-shadow);
+}
+
+.todoTitle {
+	font-size: 1.3rem;
+}
+
+.todoForm {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.todoInput {
+	flex: 1;
+	padding: 10px;
+	font-size: 1rem;
+	background-color: var(--clr-primary-10);
+	border: none;
+	border-radius: 5px 0 0 5px;
+}
+
+.todoInput:focus {
+	outline: none;
+}
+
+.btn {
+	padding: 10px;
+	border-radius: 0 5px 5px 0;
+	border: none;
+	border: 1px solid transparent;
+	background-color: var(--clr-primary-7);
+	font-size: 14px;
+	text-transform: capitalize;
+	letter-spacing: 3px;
+	cursor: pointer;
+}

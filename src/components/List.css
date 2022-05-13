@@ -1,0 +1,61 @@
+.list {
+	margin-top: 20px;
+	width: 100%;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+}
+
+.listItem {
+	display: flex;
+	justify-content: space-between;
+	transition: background-color linear 300ms;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.listItem:hover {
+	background-color: var(--clr-primary-10);
+}
+
+.listItemTitle {
+	font-size: 1rem;
+	text-transform: capitalize;
+	letter-spacing: 2px;
+}
+
+.listItemButtons {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.editBtn {
+	color: var(--clr-green-light);
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.deleteBtn {
+	color: var(--clr-red-dark);
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.clearBtn {
+	margin-top: 20px;
+	font-size: 14px;
+	background-color: white;
+	color: var(--clr-red-dark);
+	text-transform: capitalize;
+	border: none;
+	cursor: pointer;
+	padding: 5px 10px;
+	border-radius: 5px;
+	align-self: center;
+	transition: all linear 100ms;
+}
+
+.clearBtn:hover {
+	color: var(--clr-red-light);
+}

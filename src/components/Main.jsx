@@ -11,7 +11,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 function Main() {
 	const [title, setTitle] = useState('')
-	const [items, setItems] = useState([])
+	const [items, setItems] = useState(
+		JSON.parse(localStorage.getItem('items')) || []
+	)
 	const [editing, setEditing] = useState(false)
 	const [editingItem, setEditingItem] = useState({})
 
@@ -23,7 +25,8 @@ function Main() {
 			id: uuidv4(),
 			title,
 		}
-		setItems((prevItems) => [...prevItems, item])
+		setItems([...items, item])
+		localStorage.setItem('items', JSON.stringify([...items, item]))
 		setTitle('')
 	}
 
@@ -33,20 +36,37 @@ function Main() {
 			id: editingItem.id,
 			title,
 		}
-		setItems((prevItems) => [
-			...prevItems.filter((item) => item.id !== editingItem.id),
-			editedItem,
-		])
+		const editedItems = items.map((item) => {
+			if (item.id === editedItem.id) {
+				return editedItem
+			} else {
+				return item
+			}
+		})
+
+		//set to state
+		setItems(editedItems)
+
+		//set to local storage
+		localStorage.setItem('items', JSON.stringify(editedItems))
+
 		setTitle('')
 		setEditing(false)
 	}
 
 	const clearItems = () => {
 		setItems([])
+		localStorage.removeItem('items')
 	}
 
 	const deleteItem = (id) => {
-		setItems((prevItems) => prevItems.filter((item) => item.id !== id))
+		const editedItems = items.filter((item) => item.id !== id)
+		setItems(editedItems)
+		if (items.length > 0) {
+			localStorage.setItem('items', JSON.stringify(editedItems))
+		} else {
+			localStorage.removeItem('items')
+		}
 	}
 
 	const editItem = (item) => {

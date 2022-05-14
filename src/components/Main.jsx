@@ -3,17 +3,26 @@
 // alert
 // localstorage
 
-import React, { useState, useRef } from 'react'
+import React, { useReducer, useRef } from 'react'
 import './Main.css'
 import List from './List'
-
+import mainReducer from './mainReducer'
 import { v4 as uuidv4 } from 'uuid'
 
 function Main() {
-	const [title, setTitle] = useState('')
-	const [items, setItems] = useState([])
-	const [editing, setEditing] = useState(false)
-	const [editingItem, setEditingItem] = useState({})
+	const initialState = {
+		title: '',
+		items: [],
+		editing: false,
+		editingItem: {},
+	}
+
+	const [state, dispatch] = useReducer(mainReducer, initialState)
+
+	// const [title, setTitle] = useState('')
+	// const [items, setItems] = useState([])
+	// const [editing, setEditing] = useState(false)
+	// const [editingItem, setEditingItem] = useState({})
 
 	const inputRef = useRef()
 
@@ -21,42 +30,46 @@ function Main() {
 		e.preventDefault()
 		const item = {
 			id: uuidv4(),
-			title,
+			title: state.title,
 		}
-		setItems((prevItems) => [...prevItems, item])
-		setTitle('')
+		// setItems((prevItems) => [...prevItems, item])
+		// setTitle('')
+		dispatch({ type: 'HANDLE_SUBMIT', payload: item })
 	}
 
 	const handleEdit = (e) => {
 		e.preventDefault()
 		const editedItem = {
-			id: editingItem.id,
-			title,
+			id: state.editingItem.id,
+			title: state.title,
 		}
-		setItems((prevItems) => [
-			...prevItems.filter((item) => item.id !== editingItem.id),
-			editedItem,
-		])
-		setTitle('')
-		setEditing(false)
+		dispatch({ type: 'HANDLE_EDIT', payload: editedItem })
+		// setItems((prevItems) => [
+		// 	...prevItems.filter((item) => item.id !== editingItem.id),
+		// 	editedItem,
+		// ])
+		// setTitle('')
+		// setEditing(false)
 	}
 
 	const clearItems = () => {
-		setItems([])
+		dispatch({ type: 'CLEAR_ITEMS' })
 	}
 
 	const deleteItem = (id) => {
-		setItems((prevItems) => prevItems.filter((item) => item.id !== id))
+		dispatch({ type: 'DELETE_ITEM', payload: id })
+		//setItems((prevItems) => prevItems.filter((item) => item.id !== id))
 	}
 
 	const editItem = (item) => {
-		setEditing(true)
-		setTitle(item.title)
-		setEditingItem(item)
+		dispatch({ type: 'EDIT_ITEM', payload: item })
+		//setEditing(true)
+		//setTitle(item.title)
+		//setEditingItem(item)
 		inputRef.current.focus()
 	}
 
-	const submitButton = !editing ? (
+	const submitButton = !state.editing ? (
 		<button className="btn" type="submit">
 			submit
 		</button>
@@ -72,21 +85,23 @@ function Main() {
 				<h1 className="todoTitle">grocery bud</h1>
 				<form
 					className="todoForm"
-					onSubmit={!editing ? handleSubmit : handleEdit}
+					onSubmit={!state.editing ? handleSubmit : handleEdit}
 				>
 					<input
 						className="todoInput"
 						type="text"
-						value={title}
+						value={state.title}
 						ref={inputRef}
 						placeholder="e.g. eggs"
-						onChange={(e) => setTitle(e.target.value)}
+						onChange={(e) =>
+							dispatch({ type: 'SET_TITLE', payload: e.target.value })
+						}
 					/>
 					{submitButton}
 				</form>
-				{items.length > 0 && (
+				{state.items.length > 0 && (
 					<List
-						items={items}
+						items={state.items}
 						clearItems={clearItems}
 						deleteItem={deleteItem}
 						editItem={editItem}

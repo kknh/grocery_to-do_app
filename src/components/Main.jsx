@@ -110,16 +110,6 @@ function Main() {
 		inputRef.current.focus()
 	}
 
-	const submitButton = !editing ? (
-		<button className="btn" type="submit">
-			submit
-		</button>
-	) : (
-		<button className="btn" type="submit">
-			edit
-		</button>
-	)
-
 	return (
 		<div className="todo">
 			<div className="todoContainer">
@@ -144,7 +134,9 @@ function Main() {
 						placeholder="e.g. eggs"
 						onChange={(e) => setTitle(e.target.value)}
 					/>
-					{submitButton}
+					<button className="btn" type="submit">
+						{editing ? 'edit' : 'submit'}
+					</button>
 				</form>
 				{items.length > 0 && (
 					<List
